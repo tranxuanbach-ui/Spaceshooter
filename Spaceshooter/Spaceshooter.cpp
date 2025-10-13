@@ -18,7 +18,7 @@ int main() {
         float deltaTime = clock.restart().asSeconds();
         player.update(deltaTime);
 
-        window.clear(sf::Color::Black);
+        window.clear(sf::Color::Green);
         player.draw(window);
         window.display();
     }
