@@ -136,11 +136,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Minion1.cpp" />
+    <ClCompile Include="MinionSpawner.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Spaceshooter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Minion1.h" />
+    <ClInclude Include="MinionSpawner.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

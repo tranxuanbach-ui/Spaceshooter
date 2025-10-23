@@ -23,6 +23,6 @@ private:
 public:
     Player(const sf::Vector2u& windowSize);
     void handleInput();
-    void update(float deltaTime);
+    void update(float deltaTime);           
     void draw(sf::RenderWindow& window);
 };

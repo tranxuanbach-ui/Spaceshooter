@@ -1,19 +1,19 @@
-﻿#include "player.h"
+﻿#include "Player.h"
 #include <iostream>
 #include <algorithm>
 
-Player::Player(const sf::Vector2u& windowSize) {
-    if (!texture.loadFromFile("Sprites/Player/plane.png"))
+Player::Player(const sf::Vector2u & windowSize) {
+    if (!texture.loadFromFile("Sprites/Player/plane.png"))                  //tải ảnh máy bay player
         std::cerr << "Error: Cannot load plane.png\n";
 
-    if (!bulletTexture.loadFromFile("Sprites/Player/playerbullet.png"))
+    if (!bulletTexture.loadFromFile("Sprites/Player/playerbullet.png"))     //tải ảnh đạn player
         std::cerr << "Error: Cannot load playerbullet.png\n";
 
     sprite.setTexture(texture);
 
-    frameDelay = 0.08f;
-    frameTimer = 0.f;
-    currentFrame = 4;
+    frameDelay = 0.08f;                         //gán giá trị cho 1 biến độ trễ giữa các khung hình
+    frameTimer = 0.f;                           //tạo 1 bộ đếm thời gian
+    currentFrame = 4;                           
     velocity = { 0.f, 0.f };
 
     movingLeft = movingRight = returningLeft = returningRight = false;
@@ -42,24 +42,23 @@ Player::Player(const sf::Vector2u& windowSize) {
 
 void Player::handleInput() {
     velocity = { 0.f, 0.f };
-    bool aPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-    bool dPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+   
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))        //di chuyển máy bay lên
         velocity.y = -200.f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))        //di chuyển máy bay xuống
         velocity.y = 200.f;
-    if (aPressed)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))        //di chuyển máy bay trái
         velocity.x = -200.f;
-    if (dPressed)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))        //di chuyển máy bay phải
         velocity.x = 200.f;
 
-    if (aPressed) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         movingLeft = true;
         movingRight = false;
         returningRight = false;
     }
-    else if (dPressed) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         movingRight = true;
         movingLeft = false;
         returningLeft = false;
@@ -141,29 +140,29 @@ void Player::update(float deltaTime) {
 
     // --- Auto shooting (2 dải song song gần thân máy bay) ---
     if (shootTimer >= shootDelay) {
-        sf::Vector2f pos = sprite.getPosition();
-        sf::FloatRect bounds = sprite.getGlobalBounds();
+        sf::Vector2f pos = sprite.getPosition();            //lấy vị trí của sprite máy bay lưu vào biến pos
+        sf::FloatRect bounds = sprite.getGlobalBounds();    //kích thước khung chữ nhật của máy bay gồm (width, height)
 
-        float centerX = pos.x + bounds.width / 2.f;
-        float topY = pos.y;
-        float offsetX = 22.f;
-        float bulletY = topY + 15.f;
+        float centerX = pos.x + bounds.width / 2.f;         //trung tâm máy bay theo tọa độ x ngang
+        float topY = pos.y;                                 //nâng tọa độ của trung tâm máy bay theo chiều y lên trên cùng máy bay
+        float offsetX = 22.f;                               //khoảng cách từ topY sang vị trí 2 viên đạn
+        float bulletY = topY + 15.f;                        //vị trí đạn bắn ra
 
-        bullets.emplace_back(&bulletTexture, sf::Vector2f(centerX - offsetX, bulletY));
-        bullets.emplace_back(&bulletTexture, sf::Vector2f(centerX + offsetX, bulletY));
+        bullets.emplace_back(&bulletTexture, sf::Vector2f(centerX - offsetX, bulletY)); //tạo viên đạn bên trái
+        bullets.emplace_back(&bulletTexture, sf::Vector2f(centerX + offsetX, bulletY)); //tạo viên đạn bên phải
 
-        shootTimer = 0.f;
+        shootTimer = 0.f;       //đưa bộ đếm thời gian về 0 để thực hiện vòng lặp bắn sau
     }
 
     // --- Update bullets ---
     for (auto& b : bullets)
-        b.update(deltaTime);
+        b.update(deltaTime);            //giúp đạn di chuyển đến cuối màn hình chứ không bị dừng tại chỗ
 
     // --- Xoá đạn ra khỏi màn hình ---
     bullets.erase(
-        std::remove_if(bullets.begin(), bullets.end(),
+        std::remove_if(bullets.begin(), bullets.end(),     
             [](Bullet& b) { return b.isOffScreen(); }),
-        bullets.end());
+        bullets.end());                
 }
 
 void Player::draw(sf::RenderWindow& window) {
