@@ -11,4 +11,5 @@ public:
     void update(float dt);
     void draw(sf::RenderWindow& window);
     bool isOffScreen(float windowHeight) const;
+    sf::FloatRect getBounds() const { return sprite.getGlobalBounds(); }
 };

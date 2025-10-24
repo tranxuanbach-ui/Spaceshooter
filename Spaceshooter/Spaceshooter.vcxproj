@@ -137,6 +137,8 @@
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Minion1.cpp" />
+    <ClCompile Include="Minion2.cpp" />
+    <ClCompile Include="Minion3.cpp" />
     <ClCompile Include="MinionSpawner.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Spaceshooter.cpp" />
@@ -144,6 +146,8 @@
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Minion1.h" />
+    <ClInclude Include="Minion2.h" />
+    <ClInclude Include="Minion3.h" />
     <ClInclude Include="MinionSpawner.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
