@@ -25,4 +25,11 @@ public:
     void handleInput();
     void update(float deltaTime);           
     void draw(sf::RenderWindow& window);
+	const std::vector<Bullet>& getBullets() const { return bullets; }   // chỉ cho phép đọc đạn
+	std::vector<Bullet>& getBullets() { return bullets; }               // cho phép sửa đổi đạn
+
+    sf::FloatRect getBounds() const { return sprite.getGlobalBounds(); }
+    bool markedForDelete = false;
+    void markForDelete() { markedForDelete = true; }
+    bool isMarkedForDelete() const { return markedForDelete; }
 };

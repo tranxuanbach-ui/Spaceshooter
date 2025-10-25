@@ -41,9 +41,56 @@ int main() {
                 window.close();
         }
 
-        float deltaTime = clock.restart().asSeconds();
-        player.update(deltaTime);
-		spawner.update(deltaTime, window.getSize().y);
+		float deltaTime = clock.restart().asSeconds();      //tạo biến deltaTime để đồng bộ hóa tốc độ khung hình
+		player.update(deltaTime);                           //cập nhật trạng thái của player
+		spawner.update(deltaTime, window.getSize().y);      //cập nhật trạng thái của spawner
+
+        // --- Kiểm tra va chạm giữa đạn player và các minion ---
+        for (auto& bullet : player.getBullets())
+        {
+            // Minion1
+            for (auto& m : spawner.getMinions1())
+            {
+                if (bullet.getBounds().intersects(m.getBounds()))
+                {
+                    if (m.takeDamage(1))
+                        m.markForDelete();
+                    bullet.markForDelete();
+                }
+            }
+
+            // Minion2
+            for (auto& m : spawner.getMinions2())
+            {
+                if (bullet.getBounds().intersects(m.getBounds()))
+                {
+                    if (m.takeDamage(1))
+                        m.markForDelete();
+                    bullet.markForDelete();
+                }
+            }
+
+            // Minion3
+            for (auto& m : spawner.getMinions3())
+            {
+                if (bullet.getBounds().intersects(m.getBounds()))
+                {
+                    if (m.takeDamage(1))
+                        m.markForDelete();
+                    bullet.markForDelete();
+                }
+            }
+        }
+
+        // Xóa đạn và quái đã bị đánh dấu
+        player.getBullets().erase(
+            std::remove_if(player.getBullets().begin(), player.getBullets().end(),
+                [](const Bullet& b) { return b.isMarkedForDelete(); }),
+            player.getBullets().end()
+        );
+
+        spawner.cleanUpDeadMinions();
+
 
         window.clear();
 		window.draw(backgroundSprite);

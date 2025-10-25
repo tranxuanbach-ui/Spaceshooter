@@ -22,6 +22,9 @@ Minion2::Minion2(const sf::Vector2f& startPos)
 
     shootTimer = 0.f;
     shootDelay = 1.f; // bắn mỗi 1 giây
+
+    hp = 2;
+    markedForDelete = false;
 }
 
 void Minion2::update(float dt)
@@ -72,6 +75,23 @@ void Minion2::draw(sf::RenderWindow& window)
     window.draw(sprite);
     for (auto& b : bullets)
         b.draw(window);
+}
+
+bool Minion2::takeDamage(int dmg) {
+    hp -= dmg;
+    return hp <= 0;
+}
+
+sf::FloatRect Minion2::getBounds() const {
+    return sprite.getGlobalBounds();
+}
+
+bool Minion2::isMarkedForDelete() const {
+    return markedForDelete;
+}
+
+void Minion2::markForDelete() {
+    markedForDelete = true;
 }
 
 bool Minion2::isOffScreen(float windowHeight) const

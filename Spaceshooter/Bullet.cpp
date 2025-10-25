@@ -20,3 +20,7 @@ void Bullet::draw(sf::RenderWindow& window) {
 bool Bullet::isOffScreen() const {
 	return sprite.getPosition().y < -20.f;      //kiểm tra nếu đạn bay ra khỏi cửa sổ window
 }
+
+sf::Vector2f Bullet::getPosition() const {
+    return sprite.getPosition();
+}

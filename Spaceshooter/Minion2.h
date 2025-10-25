@@ -33,6 +33,8 @@ private:
     float speed;
     bool stopped;
     float stopY;
+	int hp;         // điểm máu của Minion2
+	bool markedForDelete = false; // đánh dấu để xóa Minion2 khi bị tiêu diệt
 
     float shootTimer;
     float shootDelay;
@@ -45,5 +47,11 @@ public:
     void draw(sf::RenderWindow& window);
     bool isOffScreen(float windowHeight) const;
 
-    sf::Vector2f getPosition() const { return sprite.getPosition(); }
+	sf::Vector2f getPosition() const { return sprite.getPosition(); }       // Lấy vị trí của Minion2
+
+    bool takeDamage(int dmg);
+    sf::FloatRect getBounds() const;
+
+    bool isMarkedForDelete() const;
+    void markForDelete();
 };

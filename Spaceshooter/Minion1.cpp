@@ -16,6 +16,9 @@ Minion1::Minion1(const sf::Vector2f& startPos)
 	sprite.setPosition(startPos);   // đặt vị trí ban đầu
 	sprite.setRotation(-180.f);     // quay ngược con minion để nó hướng xuống dưới
 	speed = 300.f;                  //tốc độ của con minion1
+
+	hp = 5;
+	markedForDelete = false;
 }
 
 void Minion1::update(float dt)
@@ -26,6 +29,27 @@ void Minion1::update(float dt)
 void Minion1::draw(sf::RenderWindow& window)
 {
 	window.draw(sprite);                // vẽ con minion lên cửa sổ
+}
+
+bool Minion1::takeDamage(int dmg) {
+    hp -= dmg;
+    return hp <= 0;
+}
+
+sf::FloatRect Minion1::getBounds() const {
+    return sprite.getGlobalBounds();
+}
+
+sf::Vector2f Minion1::getPosition() const {
+    return sprite.getPosition();
+}
+
+bool Minion1::isMarkedForDelete() const {
+    return markedForDelete;
+}
+
+void Minion1::markForDelete() {
+    markedForDelete = true;
 }
 
 bool Minion1::isOffScreen(float windowHeight) const

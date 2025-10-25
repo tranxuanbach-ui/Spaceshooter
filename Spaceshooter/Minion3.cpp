@@ -14,6 +14,9 @@ Minion3::Minion3(const sf::Vector2f& startPos, const sf::Vector2f& dir)
     sprite.setScale(1.f, 1.f);
     sprite.setPosition(startPos);
 
+    hp = 5;
+    markedForDelete = false;
+
     direction = dir;  // hướng bay (có thể là chéo trái hoặc phải)
     speed = 300.f;
 
@@ -30,6 +33,27 @@ void Minion3::update(float dt)
 void Minion3::draw(sf::RenderWindow& window)
 {
     window.draw(sprite);
+}
+
+bool Minion3::takeDamage(int dmg) {
+    hp -= dmg;
+    return hp <= 0;
+}
+
+sf::FloatRect Minion3::getBounds() const {
+    return sprite.getGlobalBounds();
+}
+
+sf::Vector2f Minion3::getPosition() const {
+    return sprite.getPosition();
+}
+
+bool Minion3::isMarkedForDelete() const {
+    return markedForDelete;
+}
+
+void Minion3::markForDelete() {
+    markedForDelete = true;
 }
 
 bool Minion3::isOffScreen(float windowWidth, float windowHeight) const
