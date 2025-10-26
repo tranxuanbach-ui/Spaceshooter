@@ -38,6 +38,9 @@ Player::Player(const sf::Vector2u & windowSize) {
     // --- Bullet ---
     shootDelay = 0.1f;  // bắn 10 viên/giây
     shootTimer = 0.f;
+
+    hp = 10;
+    isDead = false;
 }
 
 void Player::handleInput() {
@@ -163,6 +166,16 @@ void Player::update(float deltaTime) {
         std::remove_if(bullets.begin(), bullets.end(),     
             [](Bullet& b) { return b.isOffScreen(); }),
         bullets.end());                
+}
+
+void Player::takeDamage(int dmg) {
+    if (isDead) return;
+    hp -= dmg;
+    if (hp <= 0) {
+        hp = 0;
+        isDead = true;
+        std::cout << "Player destroyed!\n";
+    }
 }
 
 void Player::draw(sf::RenderWindow& window) {

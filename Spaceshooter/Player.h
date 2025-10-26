@@ -14,11 +14,14 @@ private:
     bool movingLeft, movingRight, returningLeft, returningRight;
     std::vector<sf::IntRect> frames;
 
-    float shootDelay, shootTimer;
-    std::vector<Bullet> bullets;
+	float shootDelay, shootTimer;       // thời gian giữa các lần bắn đạn
+	std::vector<Bullet> bullets;        // danh sách đạn của player
 
-    sf::Vector2u windowSize;
-    sf::Vector2f startPosition;
+	sf::Vector2u windowSize;        // kích thước cửa sổ
+	sf::Vector2f startPosition;     // vị trí bắt đầu của player
+
+	int hp;         // điểm máu của player
+	bool isDead;    // trạng thái sống/chết của player
 
 public:
     Player(const sf::Vector2u& windowSize);
@@ -32,4 +35,8 @@ public:
     bool markedForDelete = false;
     void markForDelete() { markedForDelete = true; }
     bool isMarkedForDelete() const { return markedForDelete; }
+
+    int getHP() const { return hp;}
+	bool isAlive() const { return !isDead; }
+	void takeDamage(int dmg);
 };

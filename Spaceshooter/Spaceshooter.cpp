@@ -1,4 +1,4 @@
-﻿#include<SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
 #include "player.h"
 #include<SFML/Audio.hpp>
 #include"MinionSpawner.h"
@@ -44,6 +44,37 @@ int main() {
 		float deltaTime = clock.restart().asSeconds();      //tạo biến deltaTime để đồng bộ hóa tốc độ khung hình
 		player.update(deltaTime);                           //cập nhật trạng thái của player
 		spawner.update(deltaTime, window.getSize().y);      //cập nhật trạng thái của spawner
+
+        // --- Va chạm giữa Player và các Minion ---
+        for (auto& m : spawner.getMinions1())
+        {
+            if (m.getBounds().intersects(player.getBounds()))
+            {
+                player.takeDamage(1);
+                m.markForDelete(); // Nếu muốn quái nổ khi va chạm, giữ dòng này
+            }
+        }
+
+        for (auto& m : spawner.getMinions2())
+        {
+            if (m.getBounds().intersects(player.getBounds()))
+            {
+                player.takeDamage(1);
+                m.markForDelete();
+            }
+        }
+
+        for (auto& m : spawner.getMinions3())
+        {
+            if (m.getBounds().intersects(player.getBounds()))
+            {
+                player.takeDamage(1);
+                m.markForDelete();
+            }
+        }
+
+        // Xóa quái đã bị đánh dấu
+        spawner.cleanUpDeadMinions();
 
         // --- Kiểm tra va chạm giữa đạn player và các minion ---
         for (auto& bullet : player.getBullets())
