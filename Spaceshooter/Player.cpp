@@ -36,11 +36,33 @@ Player::Player(const sf::Vector2u & windowSize) {
     this->windowSize = windowSize;
 
     // --- Bullet ---
-    shootDelay = 0.1f;  // bắn 10 viên/giây
+    shootDelay = 0.2f;  // bắn 5 viên/giây
     shootTimer = 0.f;
 
     hp = 10;
     isDead = false;
+
+    //Khởi tạo font và text HP
+    if (!font.loadFromFile("Sprites/Fonts/arial/ARIAL.ttf")) {
+        std::cerr << "Error: Cannot load font arial.ttf\n";
+    }
+
+    score = 0;
+
+    if (!scoreFont.loadFromFile("Sprites/Fonts/arial/ARIAL.ttf"))
+        std::cerr << "Error: Cannot load font arial.ttf\n";
+
+    scoreText.setFont(scoreFont);
+    scoreText.setCharacterSize(20);
+    scoreText.setFillColor(sf::Color::White);
+    scoreText.setPosition(20.f, 10.f); // góc trái trên màn hình
+    updateScoreText();
+
+    hpText.setFont(font);
+    hpText.setCharacterSize(20);
+    hpText.setFillColor(sf::Color::Green);
+    hpText.setPosition(windowSize.x - 120.f, 10.f);  //vị trí góc phải bên trên màn hình
+    updateHpText();
 }
 
 void Player::handleInput() {
@@ -176,10 +198,29 @@ void Player::takeDamage(int dmg) {
         isDead = true;
         std::cout << "Player destroyed!\n";
     }
+    updateHpText();
+}
+
+void Player::updateHpText() {
+    hpText.setString("HP:" + std::to_string(hp) + "/10");
+
+    //Hiệu ứng đổi màu khi máu thấp
+    if (hp >= 7)
+        hpText.setFillColor(sf::Color::Green);
+    else if (hp >= 4)
+        hpText.setFillColor(sf::Color::Yellow);
+    else
+        hpText.setFillColor(sf::Color::Red);
+}
+
+void Player::updateScoreText() {
+    scoreText.setString("Score: " + std::to_string(score));
 }
 
 void Player::draw(sf::RenderWindow& window) {
     for (auto& b : bullets)
         b.draw(window);
     window.draw(sprite);
+    window.draw(hpText);
+    window.draw(scoreText);
 }

@@ -23,6 +23,14 @@ private:
 	int hp;         // điểm máu của player
 	bool isDead;    // trạng thái sống/chết của player
 
+    //Hiển thị HP player
+    sf::Font font;
+    sf::Text hpText;
+
+    int score;
+    sf::Font scoreFont;
+    sf::Text scoreText;
+
 public:
     Player(const sf::Vector2u& windowSize);
     void handleInput();
@@ -39,4 +47,10 @@ public:
     int getHP() const { return hp;}
 	bool isAlive() const { return !isDead; }
 	void takeDamage(int dmg);
+
+    void updateHpText(); //Cập nhật và hiển thị HP
+
+    int getScore() const { return score; }
+    void addScore(int amount) { score += amount; updateScoreText(); }
+    void updateScoreText();
 };
