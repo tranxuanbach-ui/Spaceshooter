@@ -3,6 +3,7 @@
 #include "player.h"
 #include "MinionSpawner.h"
 #include "Menu.h"
+#include <fstream>
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(500, 960), "Space Shooter");
@@ -16,6 +17,14 @@ int main() {
         return 0;
 
     int lastScore = 0; // Lưu điểm của lần chơi vừa rồi
+    int highScore = 0; //lưu điểm cao nhất đạt được
+
+    // Đọc điểm cao nhất từ file
+    std::ifstream highScoreFile("highscore.txt");
+    if (highScoreFile.is_open()) {
+        highScoreFile >> highScore;
+        highScoreFile.close();
+    }
 
     while (window.isOpen()) {
         if (result == Menu::PLAY) {
@@ -92,6 +101,15 @@ int main() {
                     if (!player.isAlive()) {
                         isGameOver = true;
                         lastScore = player.getScore();
+
+                        if (lastScore > highScore) {
+                            highScore = lastScore;
+                            std::ofstream outFile("highscore.txt");
+                            if (outFile.is_open()) {
+                                outFile << highScore;
+                                outFile.close();
+                            }
+                        }
                     }
                 }
 
@@ -120,12 +138,12 @@ int main() {
             }
         }
         else if (result == Menu::HIGHSCORE) {
-            // Hiển thị điểm số lần chơi gần nhất
+            // Hiển thị điểm số cao nhất
             sf::Font font;
             font.loadFromFile("Sprites/Fonts/arial/ARIAL.ttf");
-            sf::Text scoreText("Last Score: " + std::to_string(lastScore), font, 40);
+            sf::Text scoreText("High Score: " + std::to_string(highScore), font, 40);
             scoreText.setFillColor(sf::Color::White);
-            scoreText.setPosition(120, 430);
+            scoreText.setPosition(100, 430);
 
             while (window.isOpen()) {
                 sf::Event event;

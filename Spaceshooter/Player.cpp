@@ -37,9 +37,9 @@ Player::Player(const sf::Vector2u & windowSize) {
 
     // --- Bullet ---
     shootDelay = 0.2f;  // bắn 5 viên/giây
-    shootTimer = 0.f;
+    shootTimer = 0.f;   //khoảng cách các lần bắn đạn
 
-    hp = 10;
+    hp = 10;        //hp của player
     isDead = false;
 
     //Khởi tạo font và text HP
@@ -179,15 +179,15 @@ void Player::update(float deltaTime) {
         shootTimer = 0.f;       //đưa bộ đếm thời gian về 0 để thực hiện vòng lặp bắn sau
     }
 
-    // --- Update bullets ---
+    // Update bullets
     for (auto& b : bullets)
         b.update(deltaTime);            //giúp đạn di chuyển đến cuối màn hình chứ không bị dừng tại chỗ
 
-    // --- Xoá đạn ra khỏi màn hình ---
+    // Xoá đạn ra khỏi màn hình
     bullets.erase(
-        std::remove_if(bullets.begin(), bullets.end(),     
+        std::remove_if(bullets.begin(), bullets.end(),
             [](Bullet& b) { return b.isOffScreen(); }),
-        bullets.end());                
+        bullets.end());
 }
 
 void Player::takeDamage(int dmg) {
